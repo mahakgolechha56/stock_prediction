@@ -15,19 +15,12 @@ content_columns = config.CONTENT_COLUMNS
 
 stock_data = data[stock_columns]
 content_data = data[content_columns]
-# You can pass the column names as arguments if they are different
+
 sentiment_analyzer = SentimentAnalysis(content_data,'content','Date')
 
 # Add sentiment scores to the DataFrame and return the updated DataFrame
 data_with_sentiment = sentiment_analyzer.add_sentiment_scores()
-'''rmove
-# print(data_with_sentiment)
 
-# # Add overall sentiment classification and return the updated DataFrame
-# data_with_overall_sentiment = sentiment_analyzer.add_overall_sentiment()
-# print(data_with_overall_sentiment)
-
-'''
 # Get the average sentiment score by Date and return the result
 date_sentiment = sentiment_analyzer.get_date_sentiment()
 #print(date_sentiment)
@@ -55,7 +48,7 @@ train_data = train_process.forward_fill()
 test_data = full_data.query('Date>@split_time')
 test_data = test_data.dropnna()
 #print(train_data)
-print(test_data)
+#print(test_data)
 cols_to_drop = config.COLS_to_DROP
 
 categorical_cols = config.CATEGORICAL_COLS
@@ -80,13 +73,13 @@ lightgbm_model.predict()
 # Evaluate the model
 lightgbm_model.evaluate_model()
 
-features_df = lightgbm_model.feature_importance()
+
 # Get predictions and add to a DataFrame
 predictions = lightgbm_model.get_predictions()
 
-test_data = X_test.copy()  # Assuming your test data is in X_test
+
 test_data['predicted'] = predictions
-print(test_data)
+test_data.to_csv('results.csv')
 
 
 
